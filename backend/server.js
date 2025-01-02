@@ -3,6 +3,10 @@ const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
 require('dotenv').config();
+const db = require('./config/db');
+const mealPlanRoutes = require('./routes/mealPlanRoutes');
+const authRoutes = require('./routes/authRoutes');
+const mysql = require('mysql2');
 
 // Initialize express app
 const app = express();
@@ -36,16 +40,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const mysql = require('mysql2');
-const authRoutes = require('./routes/authRoutes');
 
-// Database connection
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',  // replace with your DB username
-  password: 'Sgpv@0402',  // replace with your DB password
-  database: 'swasthya'  // replace with your DB name
-});
+
+
 
 // Test database connection
 db.connect((err) => {
@@ -65,9 +62,41 @@ app.use('/api', (req, res, next) => {
 
 // Use authentication routes
 app.use('/api/auth', authRoutes);
-app.use('/api/mealPlans', mealPlanRoutes);
+
+app.use('/api/meal-plans', mealPlanRoutes);
 // Start server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+
+
+// const express= require('express');
+// const cors= require('cors');
+// const dotenv= require('dotenv');
+// const authRoutes= require('./routes/authRoutes'); 
+// const mealPlanRoutes= require('./routes/mealPlanRoutes'); 
+// const ingredientRoutes= require('./routes/ingredientRoutes'); 
+// const recipeRoutes= require('./routes/recipeRoutes'); 
+// const allergyRoutes= require('./routes/allergyRoutes'); 
+// const healthMetricRoutes= require('./routes/healthMetricRoutes'); 
+// const nutritionTipRoutes= require('./routes/nutritionTipRoutes'); 
+
+// dotenv.config();
+// const app= express();
+
+// app.use(cors());
+// app.use(express.json());
+
+// app.use('/api/auth', authRoutes); 
+// app.use('/api/meal-plans', mealPlanRoutes); 
+// app.use('/api/ingredients', ingredientRoutes); 
+// app.use('/api/recipes', recipeRoutes); 
+// app.use('/api/allergies', allergyRoutes); 
+// app.use('/api/health-metrics', healthMetricRoutes); 
+// app.use('/api/nutrition-tips', nutritionTipRoutes); 
+
+// const PORT= process.env.PORT || 5001;
+// app.listen(PORT , () => console.log(`Server running on port ${PORT}`));
+
