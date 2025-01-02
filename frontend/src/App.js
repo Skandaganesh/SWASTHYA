@@ -47,7 +47,7 @@ function App() {
   const [healthGoals, setHealthGoals] = React.useState(""); // Added health goals for signup
   const [allergyInfo, setAllergyInfo] = React.useState(""); // Added allergy info for signup
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [isSignup, setIsSignup] = React.useState(true); // State to toggle between signup and login
+  const [isSignup, setIsSignup] = React.useState(false); // State to toggle between signup and login
 
   const handleNext = () => setActiveStep(activeStep + 1);
   const handleBack = () => setActiveStep(activeStep - 1);
@@ -143,6 +143,18 @@ function App() {
               
               <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
                 <Loading loading={loading} />
+
+                {/* Welcome note and tagline */}
+{!isLoggedIn && (
+  <Box sx={{ textAlign: 'center', mt: 4 }}>
+    <Typography variant="h4" color='red' gutterBottom>
+      WELCOME TO SWASTHYA
+    </Typography>
+    <Typography variant="subtitle1" color="textSecondary">
+      Your Trusted Partner in Health and Wellness
+    </Typography>
+  </Box>
+)}
 
                 {/* Display login/signup form when not logged in */}
                 {!isLoggedIn && (
