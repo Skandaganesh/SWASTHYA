@@ -17,7 +17,7 @@ import Loading from "./pages/Loading";
 import ChatBot from "./pages/Chatbot/ChatBot";  // Importing ChatBot
 import AppBar from "./pages/AppBar";
 import { Routes, Route } from "react-router-dom"; // Added for routing
-
+import { generateMeal } from "./api/models";
 import About from "./pages/About";  // New import for About
 import Contact from "./pages/Contact";  // New import for Contact
 
@@ -242,8 +242,33 @@ function App() {
                       <Button variant="contained" onClick={handleNext} sx={{ mt: 3, ml: 1 }}>
                         Next
                       </Button>
-                    </Box>
-                  </Paper>
+                      <Button variant="contained" onClick={async () => {
+                setLoading(true);
+                const height = formState.height / 100;
+                const BMI = formState.weight / (height * height);
+
+                try {
+                  const preferences = formState.preferences.map((obj) => obj.inputValue).join(", ");
+                  const allergies = formState.allergies.map((obj) => obj.inputValue).join(", ");
+
+                  const result = await generateMeal({
+                    BMI,
+                    gender: formState.gender,
+                    preferences,
+                    allergies,
+                    goal: formState.loseOrGain,
+                  });
+
+                  setMealPlan(result.data.choices[0].message.content);
+                  handleNext();
+                } catch (e) {
+                  console.log(e);
+                } finally {
+                  setLoading(false);
+                }
+              }} sx={{ mt: 3, ml: 1 }} disabled={activeStep < steps.length - 1}>SUBMIT</Button>
+            </Box>
+          </Paper>
                 )}
 
                 {/* Display meal plan if already available */}
