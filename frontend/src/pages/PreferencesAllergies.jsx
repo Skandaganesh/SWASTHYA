@@ -39,24 +39,40 @@ const PreferencesAllergies = ({ state, setState }) => {
           label="Mode"
           sx={{ width: "100%" }}
 
-
+          
         >
-          <MenuItem value="vegan">Vegan</MenuItem>
-          <MenuItem value="vegetarian">Vegetarian</MenuItem>
-          <MenuItem value="pescatarian">Pescatarian</MenuItem>
-          <MenuItem value="omnivore">Omnivore</MenuItem>
+          <MenuItem value="Vegetarian">Vegetarian</MenuItem>
+          <MenuItem value="Keto">Keto</MenuItem>
+          <MenuItem value="Vegan">Vegan</MenuItem>
+          <MenuItem value="Paleo">Paleo</MenuItem>
+          <MenuItem value="Mediterranean">Mediterranean</MenuItem>
         </Select>
       </FormControl>
 
 
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Lose or Gain</InputLabel>
+        <InputLabel id="demo-simple-select-label">Health Goals</InputLabel>
         <Select value={state.loseOrGain} onChange={(e) => setState({ ...state, loseOrGain: e.target.value })}
           label="Lose or Gain"
         >
-          <MenuItem value="lose">Lose</MenuItem>
-          <MenuItem value="gain">Gain</MenuItem>
+          <MenuItem value="Weight Loss">Weight Loss</MenuItem>
+          <MenuItem value="Muscle Gain">Muscle Gain</MenuItem>
+          <MenuItem value="Overall Fitness">Overall Fitness</MenuItem>
+          <MenuItem value="Weight loss, muscle gain (combined goal)">Weight loss, muscle gain (combined goal)</MenuItem>
+          <MenuItem value="Skin Health">Skin Health</MenuItem>
           <MenuItem value="maintain">Maintain</MenuItem>
+          <MenuItem value="Fat Loss">Fat Loss</MenuItem>
+          <MenuItem value="Mental Clarity">Mental Clarity</MenuItem>
+          <MenuItem value="Cholesterol Reduction">Cholesterol Reduction</MenuItem>
+          <MenuItem value="Weight Management">Weight Management</MenuItem>
+          <MenuItem value="Heart Health">Heart Health</MenuItem>
+          
+
+          
+
+
+
+
 
         </Select>
       </FormControl>
