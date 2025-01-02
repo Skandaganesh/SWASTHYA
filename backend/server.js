@@ -64,6 +64,7 @@ app.use('/api', (req, res, next) => {
 app.use('/api/auth', authRoutes);
 
 app.use('/api/meal-plans', mealPlanRoutes);
+app.use('/api/admin', require('./routes/adminRoutes'));
 // Start server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

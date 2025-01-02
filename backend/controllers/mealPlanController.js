@@ -18,7 +18,7 @@ const suggestMealPlan = async (req, res) => {
     // Step 2: Fetch meal plans based on health goal and allergens
     const mealPlans = await mealPlanModel.getMealPlans(healthGoal, allergenIds, dietaryPreferences);
 
-    // Step 3: Filter recipes by dietary preferences if specified
+   
     // Step 3: Filter recipes by dietary preferences if specified
 let filteredMealPlans = mealPlans;
 
