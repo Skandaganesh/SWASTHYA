@@ -235,7 +235,9 @@ function App() {
                     </Typography>
                   </Paper>
                 )}
-
+{
+  isLoggedIn && (<ChatBot />)
+}
                 {/* Display meal plan steps if logged in */}
                 {isLoggedIn && activeStep < steps.length && (
                   <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, borderColor: 'white', borderWidth: '1px', borderStyle: 'solid' }}>
@@ -288,7 +290,7 @@ function App() {
                   <MealPlan mealPlan={mealPlan} />
                 )}
 
-                <ChatBot />
+                
               </Container>
             </>
           }
