@@ -20,7 +20,7 @@ import { Routes, Route } from "react-router-dom"; // Added for routing
 import { generateMeal } from "./api/models";
 import About from "./pages/About";  // New import for About
 import Contact from "./pages/Contact";  // New import for Contact
-
+import UserDashboard from "./pages/UserDashboard";
 function App() {
   const steps = ["Get BMI", "Food Preferences & Allergies"];
   const [activeStep, setActiveStep] = React.useState(0);
@@ -75,7 +75,7 @@ function App() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5001/api/auth/signup', {
+      const response = await fetch('http://localhost:5001/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -107,7 +107,7 @@ function App() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5001/api/auth/login', {
+      const response = await fetch('http://localhost:5001/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }) // Make sure to include credentials (cookies)
@@ -117,7 +117,9 @@ function App() {
 
       if (response.ok) {
         alert(data.message);  // Success message
-        setIsLoggedIn(true);   // Set user as logged in
+        setIsLoggedIn(true);
+        localStorage.setItem('userId', data.userId);
+        // Set user as logged in
       } else {
         alert(data.message || 'Login failed');  // Error message
       }
@@ -238,8 +240,10 @@ function App() {
 {
   isLoggedIn && (<ChatBot />)
 }
+
+{isLoggedIn && (<UserDashboard />)}
                 {/* Display meal plan steps if logged in */}
-                {isLoggedIn && activeStep < steps.length && (
+                {isLoggedIn && 0 && activeStep < steps.length && (
                   <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, borderColor: 'white', borderWidth: '1px', borderStyle: 'solid' }}>
                     <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
                       {steps.map((label) => (

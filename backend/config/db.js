@@ -1,22 +1,20 @@
-require('dotenv').config();
-const mysql = require('mysql2');
+// backend/config/db.js
+const { Pool } = require('pg'); // Use pg for PostgreSQL
+const dotenv = require('dotenv');
 
-// Create a connection to the database using environment variables
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+dotenv.config();
+
+const pool = new Pool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME, // Use the DB_NAME environment variable
+    port: 5432, // Default PostgreSQL port; change if necessary
 });
 
-// Connect to the database
-db.connect((err) => {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-    process.exit(1);  // Exit the process with an error code
-  } else {
-    console.log('Connected to the MySQL database!');
-  }
+pool.connect(err => {
+    if (err) throw err;
+    console.log('Connected to the database.');
 });
 
-module.exports = db;  // Export the database connection so other files can use it
+module.exports = pool;

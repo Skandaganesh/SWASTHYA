@@ -28,6 +28,11 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
+  const handleLogout = () => {
+    // Here we refresh the page when the logout button is clicked
+    window.location.reload(); // Refresh the page
+  };
+
   return (
     <MuiAppBar position="static">
       <Container maxWidth="xl">
@@ -103,6 +108,21 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
+
+          {/* Logout Button */}
+          <Button
+            onClick={handleLogout}
+            sx={{
+              color: "white",
+              backgroundColor: "red",
+              '&:hover': {
+                backgroundColor: "#b71c1c", // Darker shade of red for hover effect
+              },
+              marginLeft: "auto",
+            }}
+          >
+            Logout
+          </Button>
         </Toolbar>
       </Container>
     </MuiAppBar>
