@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState, useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import './darktheme.css';
+
 import BMI from "./pages/BMI";
 import PreferencesAllergies from "./pages/PreferencesAllergies";
 import MealPlan from "./pages/MealPlan";
@@ -48,6 +49,7 @@ function App() {
   const [allergyInfo, setAllergyInfo] = React.useState(""); // Added allergy info for signup
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isSignup, setIsSignup] = React.useState(false); // State to toggle between signup and login
+  const [mealPlans, setMealPlans] = React.useState([]); // Use React for useState
 
   const handleNext = () => setActiveStep(activeStep + 1);
   const handleBack = () => setActiveStep(activeStep - 1);
@@ -71,6 +73,96 @@ function App() {
     }
   }
 
+  const [dashboardData, setDashboardData] = useState(null);  // State to hold the data
+  // State to manage loading state
+  const [error, setError] = useState(null);  // State to manage error handling
+ 
+
+    // const fetchDashboardData = async () => {
+    //     const userId = localStorage.getItem('userId');
+        
+    //     try {
+    //      const response = await fetch(`http://localhost:5001/api/user/${userId}/dashboard`, {
+    //        method: 'GET',
+    //        headers: {
+    //          'Content-Type': 'application/json',
+    //        },
+    //      });
+ 
+    //      const data = await response.json();
+ 
+    //      if (response.ok) {
+    //        setDashboardData(data);
+    //        console.log(dashboardData);
+    //      } else {
+    //        alert('Error fetching dashboard data');
+    //      }
+    //    } catch (error) {
+    //      console.error('Error fetching dashboard data:', error);
+    //    }
+    //  };
+
+    
+    const handleChangeMealPlan = async () => {
+      setLoading(true);
+      const userId = localStorage.getItem('userId');
+      
+      try {
+        // Fetch dashboard data first
+        const response = await fetch(`http://localhost:5001/api/user/${userId}/dashboard`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        const data = await response.json();
+    
+        if (response.ok) {
+          // Set the dashboard data after successful fetch
+          setDashboardData(data);
+          console.log(data);  // Debugging log to confirm the data structure
+        } else {
+          alert('Error fetching dashboard data');
+        }
+        
+        // Proceed only if the dashboard data is valid
+        if (data || data.healthGoals|| data.dietaryMode) {
+          const healthGoals = data.healthGoals;
+          const dietaryMode = data.dietaryMode;
+          console.log(userId, healthGoals, dietaryMode);
+    
+          // Make the second API call to fetch meal plans
+          const mealPlanResponse = await fetch('http://localhost:5001/api/meal-plans/fetch', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId: userId,
+              healthGoals: healthGoals,
+              dietaryMode: dietaryMode,
+            }),
+          });
+    
+          const mealPlanData = await mealPlanResponse.json();
+    
+          if (mealPlanResponse.ok) {
+            setMealPlans(mealPlanData.mealPlans);
+          } else {
+            console.error('Error fetching meal plans:', mealPlanData.message);
+          }
+        } else {
+          console.error("Missing required data (health goals or dietary mode).");
+        }
+    
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
   // Signup handler
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -242,6 +334,61 @@ function App() {
 }
 
 {isLoggedIn && (<UserDashboard />)}
+
+
+{isLoggedIn && (<Box sx={{ padding: 4 }}>
+        <Paper sx={{ padding: 3, marginBottom: 4 }}>
+          <Typography variant="h5" sx={{ color: 'text.primary' }}>
+            Generate Your Meal Plan
+          </Typography>
+          
+        
+          <Button
+            onClick={handleChangeMealPlan} // Button triggers handleChangeMealPlan
+            sx={{
+              backgroundColor: 'red',
+              color: 'white',
+              padding: '6px 12px',
+              marginLeft: 2,
+              textTransform: 'none',
+            }}
+            disabled={loading} // Disable button while loading
+          >
+            Generate
+          </Button>
+        </Paper>
+        </Box>
+      )}
+
+      {isLoggedIn && mealPlans.length > 0 && (
+        <Box sx={{ marginTop: 4 }}>
+          {mealPlans.map((plan, index) => (
+            <Paper key={plan.plan_id} sx={{ padding: 3, marginBottom: 4 }}>
+              <Typography variant="h6" sx={{ color: 'text.primary' }}>
+                Plan {index + 1}: {plan.goal_type}
+              </Typography>
+              <Typography variant="body1" sx={{ color: 'text.primary' }}>
+                Start Date: {new Date(plan.start_date).toLocaleDateString()}
+              </Typography>
+              <Typography variant="body1" sx={{ color: 'text.primary' }}>
+                End Date: {new Date(plan.end_date).toLocaleDateString()}
+              </Typography>
+              <Typography variant="body1" sx={{ color: 'text.primary' }}>
+                Total Calories: {plan.total_calories}
+              </Typography>
+              <Typography variant="body1" sx={{ color: 'text.primary' }}>
+                Recipes:
+                <ul>
+                  {plan.recipes.map((recipe) => (
+                    <li key={recipe.recipe_id}>{recipe.recipe_name}</li>
+                  ))}
+                </ul>
+              </Typography>
+            </Paper>
+          ))}
+        </Box>
+      )}
+    
                 {/* Display meal plan steps if logged in */}
                 {isLoggedIn && 0 && activeStep < steps.length && (
                   <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, borderColor: 'white', borderWidth: '1px', borderStyle: 'solid' }}>
