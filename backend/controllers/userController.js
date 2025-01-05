@@ -69,6 +69,7 @@ exports.getUserDashboardData = async (req, res) => {
                u.name, 
                u.age, 
                u.health_goals AS healthGoals, 
+               u.dietary_preferences AS dietaryMode,
                mp.start_date AS startDate, 
                mp.end_date AS endDate, 
                mp.total_calories AS totalCalories 
@@ -86,7 +87,8 @@ exports.getUserDashboardData = async (req, res) => {
                 healthGoals: user.healthgoals,
                 startDate: user.startdate,
                 endDate: user.enddate,
-                totalCalories: user.totalcalories
+                totalCalories: user.totalcalories,
+                dietaryMode: user.dietarymode
             };
             res.status(200).json(formattedResult);
         } else {
