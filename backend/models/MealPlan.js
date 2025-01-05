@@ -87,10 +87,25 @@ const getMealPlans = async (healthGoal, allergenIds, dietaryPreferences) => {
     }
 };
 
+const getRecipesForMealPlan = async (planId) => {
+    const query = `
+        SELECT r.recipe_id, r.name AS recipe_name
+        FROM Meal_Plan_Recipes mpr
+        JOIN Recipes r ON mpr.recipe_id = r.recipe_id
+        WHERE mpr.plan_id = $1;
+    `;
+    
+    try {
+        const result = await db.query(query, [planId]);
+        console.log(`Fetching recipes for meal plan ID: ${planId}`);
+        return result.rows; // Return the list of recipes for this meal plan
+    } catch (error) {
+        console.error('Error fetching recipes for meal plan:', error);
+        throw error; // Re-throw error for handling in controller
+    }
+};
 
 
 
-
-
-module.exports = { getUserAllergens, getMealPlans };
+module.exports = { getUserAllergens, getMealPlans ,getRecipesForMealPlan};
 

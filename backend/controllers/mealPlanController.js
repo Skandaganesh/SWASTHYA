@@ -11,7 +11,7 @@ const formatMealPlans = (plans) => {
         end_date: plan.end_date,
         goal_type: plan.goal_type,
         total_calories: plan.total_calories,
-        recipes: [] // Placeholder for associated recipes
+        recipes: plan.recipes || [] // Ensure recipes are included
     }));
 };
 
@@ -27,21 +27,39 @@ exports.fetchMealPlans = async (req, res) => {
         console.log(`Fetching meal plans for User ID: ${userId}, Health Goals: ${healthGoals}, Dietary Mode: ${dietaryMode}`);
 
         const allergenIds = await MealPlan.getUserAllergens(userId);
+        console.log(`Fetched allergens for User ID ${userId}:`, allergenIds);
+
         const results = await MealPlan.getMealPlans(healthGoals, allergenIds, dietaryMode);
+        console.log(`Fetched meal plans for health goals '${healthGoals}':`, results);
 
         if (results.length === 0) {
             return res.status(404).json({ message: 'No meal plans found for the given criteria.' });
         }
 
-        const formattedPlans = formatMealPlans(results);
+        // Fetch recipes for each meal plan
+        const mealPlansWithRecipes = await Promise.all(results.map(async (plan) => {
+            try {
+                const recipes = await MealPlan.getRecipesForMealPlan(plan.plan_id); // Fetching recipes for each meal plan
+                return {
+                    ...plan,
+                    recipes // Add fetched recipes to each plan
+                };
+            } catch (error) {
+                console.error(`Error fetching recipes for meal plan ID ${plan.plan_id}:`, error);
+                return { ...plan, recipes: [] }; // Return the plan with an empty recipes array on error
+            }
+        }));
+
+        const formattedPlans = formatMealPlans(mealPlansWithRecipes);
         
         console.log('Meal plans suggested successfully:', formattedPlans);
         res.status(200).json({ message: 'Meal plans suggested successfully!', mealPlans: formattedPlans });
     } catch (error) {
-        console.error('Error in suggestMealPlan:', error);
+        console.error('Error in fetchMealPlans:', error);
         res.status(500).json({ message: 'Server error, please try again later.', error: error.message });
     }
 };
+
 
 // // Create a new meal plan
 // exports.createMealPlan = async (req, res) => {

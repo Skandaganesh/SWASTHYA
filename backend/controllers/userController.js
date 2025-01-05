@@ -1,14 +1,7 @@
 const User = require('../models/User');
-const { Pool } = require('pg'); // Import the Pool for database queries
 
-// Database connection configuration
-const pool = new Pool({
-  user: 'postgres', // Update with your database username
-  host: 'localhost',
-  database: 'nutrition_db', // Update with your database name
-  password: 'Sgpv@0402', // Update with your password
-  port: 5432, // Default PostgreSQL port
-});
+
+
 
 // Create a new user
 exports.createUser = async (req, res) => {
@@ -68,10 +61,11 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-// Get user dashboard data
+const pool =  require('../config/db');
+
 exports.getUserDashboardData = async (req, res) => {
     const { userId } = req.params;
-  
+
     try {
         const result = await pool.query(
             `SELECT 
@@ -85,30 +79,27 @@ exports.getUserDashboardData = async (req, res) => {
              LEFT JOIN Meal_Plans mp ON u.user_id = mp.user_id
              WHERE u.user_id = $1`,
             [userId]
-          
-          
-      );
-      
-      
-      if (result && result.rows && result.rows.length > 0) {
-        const user = result.rows[0];
-        const formattedResult = {
-          name: user.name,
-          age: user.age,
-          healthGoals: user.healthgoals,
-          startDate: user.startdate,
-          endDate: user.enddate,
-          totalCalories: user.totalcalories
-        };
-        
-        res.status(200).json(formattedResult);
-      } else {
-        res.status(404).json({ message: 'User not found' });
-      }
+        );
+
+        if (result.rows.length > 0) {
+            const user = result.rows[0];
+            const formattedResult = {
+                name: user.name,
+                age: user.age,
+                healthGoals: user.healthgoals,
+                startDate: user.startdate,
+                endDate: user.enddate,
+                totalCalories: user.totalcalories
+            };
+            res.status(200).json(formattedResult);
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-      res.status(500).json({ message: 'Server error' });
+        console.error('Error fetching dashboard data:', error);
+        res.status(500).json({ message: 'Server error' });
     }
-  };
+};
+
   
 // Export all functions
