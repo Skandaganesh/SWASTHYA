@@ -333,7 +333,7 @@ function App() {
   isLoggedIn && (<ChatBot />)
 }
 
-{isLoggedIn && (<UserDashboard />)}
+{isLoggedIn && !loading && (<UserDashboard />)}
 
 
 {isLoggedIn && (<Box sx={{ padding: 4 }}>
@@ -352,7 +352,9 @@ function App() {
               marginLeft: 2,
               textTransform: 'none',
             }}
-            disabled={loading} // Disable button while loading
+            disabled={loading}
+            
+            
           >
             Generate
           </Button>
@@ -414,7 +416,7 @@ function App() {
 
     
                 {/* Display meal plan steps if logged in */}
-                {isLoggedIn && 0 && activeStep < steps.length && (
+                {isLoggedIn && 0&& activeStep < steps.length && (
                   <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, borderColor: 'white', borderWidth: '1px', borderStyle: 'solid' }}>
                     <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
                       {steps.map((label) => (
