@@ -212,6 +212,7 @@ function App() {
         setIsLoggedIn(true);
         localStorage.setItem('userId', data.userId);
         // Set user as logged in
+        
       } else {
         alert(data.message || 'Login failed');  // Error message
       }
