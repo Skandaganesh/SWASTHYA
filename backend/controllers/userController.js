@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const { Pool } = require('pg'); // Import the Pool for database queries
+
 
 // Database connection configuration
 
