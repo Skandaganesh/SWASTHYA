@@ -14,6 +14,10 @@ router.get('/users/:id', userController.getUserById);
 
 // Login user
 router.post('/login', userController.loginUser);
+// Route to update user email
+
+router.put('/users/:id/email', userController.updateUserEmail);
+
 
 
 // Define the route for user dashboard data

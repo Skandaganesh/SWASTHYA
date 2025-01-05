@@ -1,6 +1,6 @@
 // backend/controllers/mealPlanController.js
 const MealPlan = require('../models/MealPlan');
-const User = require('../models/User');
+const User = require('../models/user');
 const Recipe = require('../models/Recipe');
 
 // Helper function to format meal plans

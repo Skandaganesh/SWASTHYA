@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user');
 
 // Create a new user
 exports.createUser = async (req, res) => {
@@ -99,6 +99,22 @@ exports.getUserDashboardData = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+// backend/controllers/userController.js
+
+exports.updateUserEmail = async (req, res) => {
+    const { id } = req.params; // Get user ID from URL parameters
+    const { email } = req.body; // Get new email from request body
+
+    try {
+        const updatedUser = await User.updateEmail(id, email); // Call the model method to update email
+        res.status(200).json({ message: 'Email updated successfully', user: updatedUser });
+    } catch (err) {
+        console.error('Error updating user email:', err);
+        return res.status(500).json({ error: err.message });
+    }
+};
+
+
 
   
 // Export all functions

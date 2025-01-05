@@ -58,6 +58,22 @@ class User {
             throw error; // Re-throw error for handling in controller
         }
     }
+    // backend/models/User.js
+static async updateEmail(userId, newEmail) {
+    const query = 'UPDATE Users SET email = $1 WHERE user_id = $2 RETURNING *';
+    const values = [newEmail, userId];
+
+    try {
+        const result = await db.query(query, values);
+        return result.rows[0]; // Return updated user
+    } catch (error) {
+        console.error('Error updating user email:', error);
+        throw error; // Re-throw error for handling in controller
+    }
 }
+
+}
+
+
 
 module.exports = User;
