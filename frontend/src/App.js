@@ -360,34 +360,58 @@ function App() {
         </Box>
       )}
 
-      {isLoggedIn && mealPlans.length > 0 && (
-        <Box sx={{ marginTop: 4 }}>
-          {mealPlans.map((plan, index) => (
-            <Paper key={plan.plan_id} sx={{ padding: 3, marginBottom: 4 }}>
-              <Typography variant="h6" sx={{ color: 'text.primary' }}>
-                Plan {index + 1}: {plan.goal_type}
-              </Typography>
-              <Typography variant="body1" sx={{ color: 'text.primary' }}>
-                Start Date: {new Date(plan.start_date).toLocaleDateString()}
-              </Typography>
-              <Typography variant="body1" sx={{ color: 'text.primary' }}>
-                End Date: {new Date(plan.end_date).toLocaleDateString()}
-              </Typography>
-              <Typography variant="body1" sx={{ color: 'text.primary' }}>
-                Total Calories: {plan.total_calories}
-              </Typography>
-              <Typography variant="body1" sx={{ color: 'text.primary' }}>
-                Recipes:
-                <ul>
-                  {plan.recipes.map((recipe) => (
-                    <li key={recipe.recipe_id}>{recipe.recipe_name}</li>
-                  ))}
-                </ul>
-              </Typography>
-            </Paper>
-          ))}
-        </Box>
-      )}
+{isLoggedIn && mealPlans.length > 0 && (
+  <Box sx={{ marginTop: 4 }}>
+    {mealPlans.map((plan, index) => (
+      <Paper
+        key={plan.plan_id}
+        sx={{
+          padding: 3,
+          marginBottom: 4,
+          border: '2px solid white',
+          borderRadius: 2,
+          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+          backgroundColor: 'background.paper',
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            color: 'text.primary',
+            fontWeight: 'bold',
+            marginBottom: 2,
+          }}
+        >
+          Plan {index + 1}: <span style={{ color: 'red' }}>{plan.goal_type}</span>
+        </Typography>
+        <Typography variant="body1" sx={{ color: 'text.primary', marginBottom: 1 }}>
+          <strong>Start Date:</strong>{' '}
+          <span style={{ color: 'red' }}>{new Date(plan.start_date).toLocaleDateString()}</span>
+        </Typography>
+        <Typography variant="body1" sx={{ color: 'text.primary', marginBottom: 1 }}>
+          <strong>End Date:</strong>{' '}
+          <span style={{ color: 'red' }}>{new Date(plan.end_date).toLocaleDateString()}</span>
+        </Typography>
+        <Typography variant="body1" sx={{ color: 'text.primary', marginBottom: 1 }}>
+          <strong>Total Calories:</strong>{' '}
+          <span style={{ color: 'red' }}>{plan.total_calories}</span>
+        </Typography>
+        <Typography variant="body1" sx={{ color: 'text.primary', marginBottom: 1 }}>
+          <strong>Recipes:</strong>
+          <ul style={{ marginLeft: 20, marginTop: 5 }}>
+            {plan.recipes.map((recipe) => (
+              <li key={recipe.recipe_id} style={{ lineHeight: 1.6, color: 'red' }}>
+                {recipe.recipe_name}
+              </li>
+            ))}
+          </ul>
+        </Typography>
+      </Paper>
+    ))}
+  </Box>
+)}
+
+
     
                 {/* Display meal plan steps if logged in */}
                 {isLoggedIn && 0 && activeStep < steps.length && (
