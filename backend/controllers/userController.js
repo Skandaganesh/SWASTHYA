@@ -2,13 +2,7 @@ const User = require('../models/User');
 const { Pool } = require('pg'); // Import the Pool for database queries
 
 // Database connection configuration
-const pool = new Pool({
-  user: 'postgres', // Update with your database username
-  host: 'localhost',
-  database: 'nutrition_db', // Update with your database name
-  password: 'Sgpv@0402', // Update with your password
-  port: 5432, // Default PostgreSQL port
-});
+
 
 // Create a new user
 exports.createUser = async (req, res) => {
