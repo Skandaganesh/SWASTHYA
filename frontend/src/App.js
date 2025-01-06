@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import './darktheme.css';
-
+import AdminDashboard from './pages/AdminDashboard';
 import BMI from "./pages/BMI";
 import PreferencesAllergies from "./pages/PreferencesAllergies";
 import MealPlan from "./pages/MealPlan";
@@ -229,7 +229,7 @@ function App() {
         {/* About and Contact pages won't have AppBar */}
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-
+        <Route path="/admindashboard" element={<AdminDashboard />} />
         {/* Default route renders AppBar */}
         <Route
           path="*"
@@ -333,11 +333,12 @@ function App() {
 {
   isLoggedIn && (<ChatBot />)
 }
+{isLoggedIn && (localStorage.getItem('userId')==1) && (<AdminDashboard />)}
+{isLoggedIn && !loading && (localStorage.getItem('userId')!=1) && (<UserDashboard />)}
 
-{isLoggedIn && !loading && (<UserDashboard />)}
 
 
-{isLoggedIn && (<Box sx={{ padding: 4 }}>
+{isLoggedIn && (localStorage.getItem('userId')!=1)&& (<Box sx={{ padding: 4 }}>
         <Paper sx={{ padding: 3, marginBottom: 4 }}>
           <Typography variant="h5" sx={{ color: 'text.primary' }}>
             Generate Your Meal Plan
