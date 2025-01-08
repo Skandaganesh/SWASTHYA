@@ -340,7 +340,7 @@ function App() {
             Generate Your Meal Plan
           </Typography>
           
-        
+      
           <Button
             onClick={handleChangeMealPlan} // Button triggers handleChangeMealPlan
             sx={{
