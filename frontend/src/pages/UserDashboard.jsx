@@ -10,7 +10,7 @@ const [loading]=useState(false);
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await fetch(`http://localhost:5001/api/user/${userId}/dashboard`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user/${userId}/dashboard`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

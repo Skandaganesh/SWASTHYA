@@ -82,7 +82,7 @@ function App() {
     //     const userId = localStorage.getItem('userId');
         
     //     try {
-    //      const response = await fetch(`http://localhost:5001/api/user/${userId}/dashboard`, {
+    //      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user/${userId}/dashboard`, {
     //        method: 'GET',
     //        headers: {
     //          'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ function App() {
       
       try {
         // Fetch dashboard data first
-        const response = await fetch(`http://localhost:5001/api/user/${userId}/dashboard`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user/${userId}/dashboard`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ function App() {
           console.log(userId, healthGoals, dietaryMode);
     
           // Make the second API call to fetch meal plans
-          const mealPlanResponse = await fetch('http://localhost:5001/api/meal-plans/fetch', {
+          const mealPlanResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/meal-plans/fetch`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ function App() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5001/api/signup', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -199,7 +199,7 @@ function App() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5001/api/login', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }) // Make sure to include credentials (cookies)

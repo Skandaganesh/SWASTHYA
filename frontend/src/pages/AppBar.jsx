@@ -77,7 +77,7 @@ function ResponsiveAppBar() {
     
 
     try {
-      const response = await fetch(`http://localhost:5001/api/users/${userId}`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${userId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -120,7 +120,7 @@ function ResponsiveAppBar() {
   
     try {
       const response = await fetch(
-        `http://localhost:5001/api/users/${userId}/email`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/${userId}/email`,
         {
           method: "PUT",
           headers: {

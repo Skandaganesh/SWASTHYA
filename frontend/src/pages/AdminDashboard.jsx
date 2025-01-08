@@ -18,7 +18,7 @@ const AdminDashboard = () => {
 
   const fetchMealPlans = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/admin/meal-plans');
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/admin/meal-plans`);
       setMealPlans(response.data);
     } catch (error) {
       console.error('Error fetching meal plans:', error);
@@ -27,7 +27,7 @@ const AdminDashboard = () => {
 
   const addMealPlan = async () => {
     try {
-      await axios.post('http://localhost:5001/api/admin/meal-plans', newMealPlan);
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/admin/meal-plans`, newMealPlan);
       fetchMealPlans();
       setNewMealPlan({ userId: '', startDate: '', endDate: '', goalType: '', totalCalories: '' });
     } catch (error) {
@@ -37,7 +37,7 @@ const AdminDashboard = () => {
 
   const deleteMealPlan = async (planId) => {
     try {
-      await axios.delete(`http://localhost:5001/api/admin/meal-plans/${planId}`);
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/admin/meal-plans/${planId}`);
       fetchMealPlans();
     } catch (error) {
       console.error('Error deleting meal plan:', error);
@@ -47,7 +47,7 @@ const AdminDashboard = () => {
   const updateMealPlanHandler = async () => {
     try {
       await axios.put(
-        `http://localhost:5001/api/admin/meal-plans/${updateMealPlan.planId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/admin/meal-plans/${updateMealPlan.planId}`,
         {
           goalType: updateMealPlan.goalType,
           totalCalories: updateMealPlan.totalCalories,
