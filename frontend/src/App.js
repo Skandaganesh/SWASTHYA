@@ -144,7 +144,7 @@ function App() {
               dietaryMode: dietaryMode,
             }),
           });
-    
+    console.log('jj');
           const mealPlanData = await mealPlanResponse.json();
     
           if (mealPlanResponse.ok) {
