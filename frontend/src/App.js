@@ -15,7 +15,7 @@ import BMI from "./pages/BMI";
 import PreferencesAllergies from "./pages/PreferencesAllergies";
 import MealPlan from "./pages/MealPlan";
 import Loading from "./pages/Loading";
-import ChatBot from "./pages/Chatbot/ChatBot";  // Importing ChatBot
+
 import AppBar from "./pages/AppBar";
 import { Routes, Route } from "react-router-dom"; // Added for routing
 import { generateMeal } from "./api/models";
@@ -330,13 +330,9 @@ function App() {
                     </Typography>
                   </Paper>
                 )}
-{
-  isLoggedIn && (<ChatBot />)
-}
+
 {isLoggedIn && (localStorage.getItem('userId')==1) && (<AdminDashboard />)}
 {isLoggedIn && !loading && (localStorage.getItem('userId')!=1) && (<UserDashboard />)}
-
-
 
 {isLoggedIn && (localStorage.getItem('userId')!=1)&& (<Box sx={{ padding: 4 }}>
         <Paper sx={{ padding: 3, marginBottom: 4 }}>
